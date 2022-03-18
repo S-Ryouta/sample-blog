@@ -1,0 +1,31 @@
+version: 2.1
+
+orbs:
+  go: circleci/go@1.7.1
+
+commands:
+  setup:
+    steps:
+      - checkout
+      - go/load-cache
+      - go/mod-download
+      - run:
+          name: "staticcheck download"
+          command: |
+            go install honnef.co/go/tools/cmd/staticcheck@latest
+      - go/save-cache
+
+jobs:
+  staticcheck:
+    docker:
+      - image: cimg/go:1.17.7
+    steps:
+      - setup
+      - run:
+          name: "staticcheck"
+          command: staticcheck
+
+workflows:
+  run_tests:
+    jobs:
+      - staticcheck
