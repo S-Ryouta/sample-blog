@@ -1,4 +1,4 @@
 .env
 .gitignore
-./tmp
+/tmp
 *.idea
