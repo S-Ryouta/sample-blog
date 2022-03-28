@@ -7,8 +7,6 @@ import (
 )
 
 type Entry struct {
-	gorm.Model
-
 	ID          string     `gorm:"primaryKey" json:"id"`
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
