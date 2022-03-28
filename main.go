@@ -14,10 +14,16 @@ import (
 	"time"
 )
 
-func main() {
-	db := db.Connect()
+func Setup() *fiber.App {
 	app := fiber.New()
 	router.BlogRouter(app)
+
+	return app
+}
+
+func main() {
+	db := db.Connect()
+	app := Setup()
 
 	go func() {
 		if err := app.Listen(":8000"); err != nil {

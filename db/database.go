@@ -1,9 +1,11 @@
 package db
 
 import (
+	"fmt"
 	"github.com/S-Ryouta/sample-blog/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"log"
 	"os"
 )
@@ -13,23 +15,29 @@ var (
 )
 
 func Connect() *gorm.DB {
-	user := os.Getenv("DATABASE_USERNAME")
-	pass := os.Getenv("DATABASE_PASSWORD")
-	dsn := user + ":" + pass + "@tcp(sample-blog-db:3306)/" + "sample_blog" + "?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := fmt.Sprintf(
+		"%s:%s@(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		os.Getenv("DATABASE_USERNAME"),
+		os.Getenv("DATABASE_PASSWORD"),
+		os.Getenv("DATABASE_HOST"),
+		"3306",
+		os.Getenv("DATABASE_NAME"),
+	)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 
 	if err != nil {
 		log.Fatal("Failed to connect to database. \n", err)
 		os.Exit(2)
 	}
 
-	log.Println("connected")
-	tableMigrate(db)
+	TableMigrate(db)
 	DBConn = db
 	return DBConn
 }
 
-func tableMigrate(db *gorm.DB) {
+func TableMigrate(db *gorm.DB) {
 	db.AutoMigrate(&models.Entry{})
 }
