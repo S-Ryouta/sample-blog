@@ -27,7 +27,7 @@ jobs:
   tests:
     docker:
       - image: cimg/go:1.17.7
-      - image: circleci/mysql:8.0
+      - image: cimg/mysql:8.0
         environment:
           MYSQL_ROOT_PASSWORD: root_password
           MYSQL_USER: test_user
