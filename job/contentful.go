@@ -16,7 +16,7 @@ import (
 // NOTE: JSON-to-GOでcontentfulのレスポンス構造体を作成
 //       ref: https://mholt.github.io/json-to-go/
 
-type EntitiesResponse struct {
+type EntriesResponse struct {
 	Sys struct {
 		Type string `json:"type"`
 	} `json:"sys"`
@@ -133,7 +133,7 @@ func getRequest() error {
 	defer response.Body.Close()
 	body, _ := ioutil.ReadAll(response.Body)
 	jsonBytes := ([]byte)(string(body))
-	data := new(EntitiesResponse)
+	data := new(EntriesResponse)
 
 	if err := json.Unmarshal(jsonBytes, data); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)

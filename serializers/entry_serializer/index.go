@@ -1,4 +1,4 @@
-package entities
+package entry_serializer
 
 import (
 	"github.com/S-Ryouta/sample-blog/models"
