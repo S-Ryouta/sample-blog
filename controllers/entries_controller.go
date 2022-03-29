@@ -1,10 +1,10 @@
-package api
+package controllers
 
 import (
 	"fmt"
 	"github.com/S-Ryouta/sample-blog/db"
 	"github.com/S-Ryouta/sample-blog/models"
-	"github.com/S-Ryouta/sample-blog/serializers/entities"
+	"github.com/S-Ryouta/sample-blog/serializers/entry_serializer"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -15,7 +15,7 @@ func GetEntries(c *fiber.Ctx) error {
 		fmt.Println("failed to get entries", err)
 	}
 
-	return c.Status(fiber.StatusOK).JSON(entities.IndexSerializer(entries))
+	return c.Status(fiber.StatusOK).JSON(entry_serializer.IndexSerializer(entries))
 }
 
 func GetEntry(c *fiber.Ctx) error {

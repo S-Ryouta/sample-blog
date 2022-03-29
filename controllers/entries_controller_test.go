@@ -1,10 +1,10 @@
-package api
+package controllers
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/S-Ryouta/sample-blog/models"
-	"github.com/S-Ryouta/sample-blog/serializers/entities"
+	"github.com/S-Ryouta/sample-blog/serializers/entry_serializer"
 	"github.com/S-Ryouta/sample-blog/test/factories"
 	"github.com/S-Ryouta/sample-blog/test/helpers"
 	"github.com/gofiber/fiber/v2"
@@ -37,14 +37,14 @@ func TestGetEntries(t *testing.T) {
 	helpers.TestDbMock(t)
 
 	app := fiber.New()
-	app.Get("/entities", func(c *fiber.Ctx) error {
+	app.Get("/entries", func(c *fiber.Ctx) error {
 		return GetEntries(c)
 	})
 
 	var entries []models.Entry
 	entries = append(entries, factories.CreateEntry(DBConn))
 
-	entryJson, err := json.Marshal(entities.IndexSerializer(entries))
+	entryJson, err := json.Marshal(entry_serializer.IndexSerializer(entries))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -60,7 +60,7 @@ func TestGetEntries(t *testing.T) {
 	}{
 		{
 			description:   "index route",
-			route:         "/entities",
+			route:         "/entries",
 			expectedError: false,
 			expectedCode:  200,
 			expectedBody:  expectedBody,
@@ -97,7 +97,7 @@ func TestGetEntry(t *testing.T) {
 	helpers.TestDbMock(t)
 
 	app := fiber.New()
-	app.Get("/entities/:id", func(c *fiber.Ctx) error {
+	app.Get("/entries/:id", func(c *fiber.Ctx) error {
 		return GetEntry(c)
 	})
 
@@ -120,7 +120,7 @@ func TestGetEntry(t *testing.T) {
 	}{
 		{
 			description:   "index route",
-			route:         fmt.Sprintf("/entities/%s", entry.ID),
+			route:         fmt.Sprintf("/entries/%s", entry.ID),
 			expectedError: false,
 			expectedCode:  200,
 			expectedBody:  expectedBody,
